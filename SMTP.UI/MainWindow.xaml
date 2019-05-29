@@ -1,0 +1,35 @@
+﻿<Window x:Class="SMTP.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <StackPanel x:Name="RootPanel">
+        <StackPanel Orientation="Horizontal">
+            <Label Content="From" Style="{StaticResource LabelStyle}" />
+            <TextBox x:Name="From" Style="{StaticResource TextBoxStyle}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="To" Style="{StaticResource LabelStyle}" />
+            <TextBox x:Name="To" Style="{StaticResource TextBoxStyle}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Cc" Style="{StaticResource LabelStyle}" />
+            <TextBox x:Name="Cc" Style="{StaticResource TextBoxStyle}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Subject" Style="{StaticResource LabelStyle}" />
+            <TextBox x:Name="Subject" Style="{StaticResource TextBoxStyle}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Body" Style="{StaticResource LabelStyle}" />
+            <TextBox x:Name="Body" Style="{StaticResource TextBoxStyle}" Height="187" Width="605" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="Config" Width="143" Height="39" Content="Config" Click="Config_OnClick" />
+            <Button x:Name="Send" Width="143" Height="39" Content="Send" Margin="60, 0, 0, 0" Click="Send_OnClick" />
+        </StackPanel>
+    </StackPanel>
+</Window>
