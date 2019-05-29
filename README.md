@@ -10,6 +10,6 @@ A simple but beautiful SMTP Client powered by WPF.
 
 ## Screen Shots
 
-![MainWindow](res\MainWindow)
+![MainWindow](./res/MainWindow)
 
-![Popup](res\Popup)
+![Popup](./res/Popup)
