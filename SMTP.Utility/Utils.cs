@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,6 +41,12 @@ namespace SMTP.Utility
             string raw = File.ReadAllText(ConfigFile);
 
             return JsonConvert.DeserializeObject<ClientOptions>(raw);
+        }
+
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        public static void InvokeUIThread(Action action)
+        {
+            Application.Current.Dispatcher.Invoke(action);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Threading;
 
 namespace SMTP.Core
 {
@@ -8,6 +9,9 @@ namespace SMTP.Core
     {
         private readonly SmtpClient _smtp;
         private readonly MailMessage _mail;
+
+        public delegate void SendedEventHandler();
+        public event SendedEventHandler Sended;
 
         public MailClient(ClientOptions options)
         {
@@ -60,7 +64,13 @@ namespace SMTP.Core
             _mail.IsBodyHtml = options.IsBodyHtml;
             _mail.Body = options.Body;
 
-            _smtp.Send(_mail);
+            Thread th = new Thread(() =>
+            {
+                _smtp.Send(_mail);
+                Sended?.Invoke();
+            });
+
+            th.Start();
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using SMTP.Core;
 using SMTP.Utility;
 
@@ -12,11 +14,14 @@ namespace SMTP.UI
         {
             InitializeComponent();
 
-            Utils.SetChildMargin(RootPanel);
+            //Utils.SetChildMargin(RootPanel);
+            LoadConfig();
         }
 
         private void SendMail()
         {
+            ButtonProgressAssist.SetIsIndicatorVisible(Send, true);
+
             ClientOptions clientOptions = Utils.ReadConfig();
 
             MailOptions mailOptions = new MailOptions
@@ -29,6 +34,14 @@ namespace SMTP.UI
             };
 
             MailClient mailClient = new MailClient(clientOptions);
+            mailClient.Sended += () =>
+            {
+                Utils.InvokeUIThread(() =>
+                {
+                    ButtonProgressAssist.SetIsIndicatorVisible(Send, false);
+                    ShowMessage("Mail Sended!");
+                });
+            };
             mailClient.Send(mailOptions);
         }
 
@@ -53,13 +66,50 @@ namespace SMTP.UI
         private void Send_OnClick(object sender, RoutedEventArgs e)
         {
             SendMail();
-            MessageBox.Show("Sended!");
         }
 
-        private void Config_OnClick(object sender, RoutedEventArgs e)
+        private void ShowMessage(object message)
         {
-            Window options = new Options();
-            options.ShowDialog();
+            Snackbar.MessageQueue.Enqueue(message);
         }
+
+        #region Popup
+
+        private void LoadConfig()
+        {
+            ClientOptions config = Utils.ReadConfig();
+            if (config == null)
+            {
+                return;
+            }
+
+            Host.Text = config.Host;
+            Port.Text = $"{config.Port}";
+            EnableSsl.IsChecked = config.EnableSsl;
+            Username.Text = config.Username;
+            Password.Password = config.Password;
+        }
+
+        private void SaveConfig()
+        {
+            ClientOptions clientOptions = new ClientOptions
+            {
+                Host = Host.Text.Trim(),
+                Port = Convert.ToInt32(Port.Text),
+                EnableSsl = Convert.ToBoolean(EnableSsl.IsChecked),
+                Username = Username.Text.Trim(),
+                Password = Password.Password.Trim()
+            };
+
+            Utils.SaveConfig(clientOptions);
+        }
+
+        private void PopSave_OnClick(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+            this.Close();
+        }
+
+        #endregion //Popup
     }
 }

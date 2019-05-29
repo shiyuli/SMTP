@@ -3,33 +3,123 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:ui="clr-namespace:SMTP.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SMTP" Height="450" Width="600">
 
-    <StackPanel x:Name="RootPanel">
-        <StackPanel Orientation="Horizontal">
-            <Label Content="From" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="From" Style="{StaticResource TextBoxStyle}" />
+    <StackPanel>
+        <StackPanel HorizontalAlignment="Right">
+            <materialDesign:PopupBox
+                Margin="16,0,16,0"
+                StaysOpen="True">
+                <StackPanel 
+                    x:Name="Options"
+                    Width="{Binding Source={StaticResource ControlStyle}, Path=PopupBoxWidth}">
+                    <TextBox
+                        x:Name="Host"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        MaxWidth="200"
+                        materialDesign:HintAssist.Hint="Host" 
+                        Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
+                    <TextBox
+                        x:Name="Port"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        MaxWidth="200"
+                        materialDesign:HintAssist.Hint="Port" 
+                        Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
+                    <TextBox
+                        x:Name="Username"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        MaxWidth="200"
+                        materialDesign:HintAssist.Hint="Username" 
+                        Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
+                    <PasswordBox
+                        x:Name="Password"
+                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                        MaxWidth="200"
+                        PasswordChar="*"
+                        materialDesign:HintAssist.Hint="Password" 
+                        Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
+                    <CheckBox
+                        x:Name="EnableSsl"
+                        IsChecked="True" 
+                        VerticalAlignment="Center" 
+                        Content="Enable SSL"
+                        MaxWidth="200"
+                        Margin="0, 6"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="15, 9">
+                        <Button 
+                            x:Name="PopSave" Content="Save" 
+                            Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}"
+                            Click="PopSave_OnClick" />
+
+                        <Button
+                            Content="Cancel" 
+                            Foreground="Red"
+                            Command="{x:Static materialDesign:PopupBox.ClosePopupCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:PopupBox>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="To" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="To" Style="{StaticResource TextBoxStyle}" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Cc" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="Cc" Style="{StaticResource TextBoxStyle}" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Subject" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="Subject" Style="{StaticResource TextBoxStyle}" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Body" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="Body" Style="{StaticResource TextBoxStyle}" Height="187" Width="605" />
-        </StackPanel>
+
+        <TextBox
+            x:Name="From"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+            MaxWidth="500"
+            materialDesign:HintAssist.Hint="From" 
+            Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
+        <TextBox
+            x:Name="To"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+            MaxWidth="500"
+            materialDesign:HintAssist.Hint="To" 
+            Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
+        <TextBox
+            x:Name="Cc"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+            MaxWidth="500"
+            materialDesign:HintAssist.Hint="Cc" 
+            Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
+        <TextBox
+            x:Name="Subject"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+            MaxWidth="500"
+            materialDesign:HintAssist.Hint="Subject" 
+            Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
+        <TextBox
+            x:Name="Body"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+            MaxWidth="500"
+            AcceptsReturn="True"
+            VerticalScrollBarVisibility="Auto"
+            materialDesign:HintAssist.Hint="Body" 
+            Margin="{Binding Source={StaticResource ControlStyle}, Path=Margin}" />
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="Config" Width="143" Height="39" Content="Config" Click="Config_OnClick" />
-            <Button x:Name="Send" Width="143" Height="39" Content="Send" Margin="60, 0, 0, 0" Click="Send_OnClick" />
+            <Button
+                x:Name="Send"
+                Width="{Binding Source={StaticResource ControlStyle}, Path=(ui:ControlStyle.ButtonWidth), Mode=OneTime}"
+                materialDesign:ButtonProgressAssist.Value="-1"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                Content="Send"
+                Click="Send_OnClick"
+                Margin="9" />
         </StackPanel>
+
+        <materialDesign:Snackbar
+            MessageQueue="{materialDesign:MessageQueue}"
+            x:Name="Snackbar" />
     </StackPanel>
 </Window>
